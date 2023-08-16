@@ -19,7 +19,7 @@ void Reconstruct::InitImagesInfo(){
 void Reconstruct::ExtractMatch(){
     int imgNum=imagesInfo->Images.size();
     int threadNum=config_->matchThreadNum<imgNum*imgNum/2? config_->matchThreadNum:imgNum*imgNum/2;
-    FeatureExtractThreadpool=new Threadpool<FeatureExtractMatchPtr>(threadNum,config_->matchRequestNum);
+    Threadpool<FeatureExtractMatchPtr>* FeatureExtractThreadpool=new Threadpool<FeatureExtractMatchPtr>(threadNum,config_->matchRequestNum);
     for(int i=0;i<imgNum;++i){
         for(int j=i+1;j<imgNum;++j){
               FeatureExtractMatchPtr featureExtractMatch=std::make_shared<FeatureExtractMatch>(config_->ExtractorName,
