@@ -22,10 +22,8 @@ class Threadpool{
         std::list<T>workqueue_;
         locker queuelocker_;
         sem queuestat_;
+        int tasks_Number_;
 };
-
-
-
 
 template<typename T>
 Threadpool<T>::Threadpool(int thread_number,int max_request):thread_number_(thread_number),max_requests_(max_request){
@@ -43,9 +41,13 @@ Threadpool<T>::Threadpool(int thread_number,int max_request):thread_number_(thre
         }
         //  pthread_join(threads_+i, NULL); 
     }
+     tasks_Number_=0;
 }
 template<typename T>
 Threadpool<T>::~Threadpool(){
+    while( tasks_Number_>0){
+        sleep(1);
+    }
     delete[] threads_;
 }
 
@@ -65,6 +67,7 @@ bool Threadpool<T>::append(T request){
         return false;
     }
     workqueue_.push_back(request);
+    tasks_Number_+=1;
     queuelocker_.unlock();
     queuestat_.post();
     return true;
@@ -101,6 +104,7 @@ void Threadpool<T>::run()
             continue;
         }
         request->work();
+        tasks_Number_-=1;
     }
 }
 #endif
