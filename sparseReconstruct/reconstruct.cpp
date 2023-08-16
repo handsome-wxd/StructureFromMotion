@@ -30,11 +30,12 @@ void Reconstruct::ExtractMatch(){
             //   sleep(0.3);
         }
     }
+     delete FeatureExtractThreadpool;
     //等到匹配结束
     // while(!threadpool->workEmpty()){
     //     std::cout<<"";
     // }
-    FeatureExtractThreadpool->waitAllTasks();
+    //FeatureExtractThreadpool->waitAllTasks();
     // threadpool->waitAllTasks();
     // delete threadpool;
     // sleep(0.3);
